@@ -29,46 +29,53 @@ def index():
 def group_homepage():
 	group_name = request.args.get('group')
 	group = dict_group[group_name]
-	return group.name
+	return render_template('group_homepage.html', group=group.name)
 
 
 @app.route('/afficher_commandes', methods=['GET'])
 def afficher_commandes():
-	
+	group_name = request.args.get('group')
+
 	con = lite.connect('exemples.db')
 	con.row_factory = lite.Row
 	cur = con.cursor()
-	cur.execute("SELECT nom, prenom, role FROM personnes")
+	cur.execute("SELECT * FROM personnes")
 	lignes = cur.fetchall()
 	con.close()
-	return render_template('afficher_commandes.html', personnes = lignes)
-	
+	return render_template('afficher_commandes.html', commandes_values=lignes, commande_keys=lignes[0].keys(), group=group_name)
+
+
 @app.route('/passer_commande', methods=['GET', 'POST'])
 def passer_commande():
 	group_name = request.args.get('group')
 
+	con = lite.connect('exemples.db')
+	con.row_factory = lite.Row
+	cur = con.cursor()
+	cur.execute("SELECT * FROM personnes")
+	lignes = cur.fetchall()
+	con.close()
+
 	if not request.method == 'POST':
-		return render_template('passer_commande.html', msg = "", nom = "", prenom = "", role = 0, group=group_name)
+		return render_template('passer_commande.html', commandes_values=lignes, commande_keys=lignes[0].keys(), group=group_name)
 	else:
 		nom = request.form.get('nom', '')
-		prenom = request.form.get('prenom','')
+		prenom = request.form.get('prenom', '')
 		role = request.form.get('role', 0, type=int)
-		
-		if (nom != "" and prenom != "" and role > 0 and role < 4):
-			# con = lite.connect('exemples.db')
-			# con.row_factory = lite.Row
-			# cur = con.cursor()
-			# cur.execute("INSERT INTO personnes('nom', 'prenom', 'role') VALUES (?,?,?)", (nom,prenom,role))
-			# con.commit()
-			# con.close()
-			return redirect(url_for('succes'))
-		else:
-			return render_template('passer_commande.html', msg = "Mauvaise saisie !", nom = "", prenom = "", role = 0, group=group_name)
+
+		con = lite.connect('exemples.db')
+		con.row_factory = lite.Row
+		cur = con.cursor()
+		cur.execute("INSERT INTO personnes('nom', 'prenom', 'role') VALUES (?,?,?)", (nom,prenom,role))
+		con.commit()
+		con.close()
+		return redirect(url_for('succes', msg="Okay commande bien passée"))
+
 
 @app.route('/succes')
 def succes():
 	group_name = request.args.get('group')
-	return "succes"
+	return render_template('succes.html', msg="", group=group_name)
 
 # ---------------------------------------
 # pour lancer le serveur web local Flask

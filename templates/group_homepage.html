@@ -6,7 +6,10 @@
 	</head>
 	<body>
 		<div class='contenu'>
-            <a href='{{ url_for('group_homepage', group=group_name) }}'>{{ group_name }} </a> <br/><br/>
+            <h1>{{ group }} Homepage </h1><br/><br/>
+            <a href='{{ url_for('group_homepage', group=group) }}'>{{ group }} homepage </a> <br/><br/>
+            <a href='{{ url_for('passer_commande', group=group) }}'>passer_commande </a> <br/><br/>
+            <a href='{{ url_for('afficher_commandes', group=group) }}'>afficher_commande </a> <br/><br/>
         </div>
 	</body>
 </html>

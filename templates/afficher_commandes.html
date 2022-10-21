@@ -6,20 +6,20 @@
 </head>
 <body>
 <div class='contenu'>
-	<a href='/'>retour à l'index</a><br/><br/>
-	<h1>Liste des personnes</h1><br/>
+	<a href='{{ url_for("group_homepage", group=group) }}'>{{ group }} homepage </a><br/><br/>
+	<h1>Liste des commandes</h1><br/>
 	<div class="lp_table">
 		<div class="lp_entetes">
-			<div class="lp_entete">Nom</div>
-			<div class="lp_entete">Prénom</div>
-			<div class="lp_entete">Rôle</div>
+            {% for key in commande_keys %}
+			    <div class="lp_entete">{{ key }}</div>
+            {% endfor %}
 		</div>
-		{% for personne in personnes %}
+		{% for commande in commandes_values %}
 			<div class="lp_ligne">
-				<div class="lp_cellule">{{ personne['nom'] }}</div>
-				<div class="lp_cellule">{{ personne['prenom'] }}</div>
-				<div class="lp_cellule">{% if personne['role']==1 %}BDD{% endif %}{% if personne['role']==2 %}HTML{% endif %}{% if personne['role']==3 %}Python{% endif %}</div>
-			</div>
+                {% for key in commande_keys %}
+				    <div class="lp_cellule">{{ commande[key] }}</div>
+			    {% endfor %}
+            </div>
 		{% endfor %}
 	</div>
 </div>

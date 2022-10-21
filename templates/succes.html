@@ -6,9 +6,8 @@
 	</head>
 	<body>
 		<div class='contenu'>
-			<a href='/'>retour à l'index</a><br/><br/>
-			<h1>Hello {{ prenom }} !</h1><br/>
-			<img src='{{ url_for("static", filename="globe.png") }}'/>
+			<a href='{{ url_for('group_homepage', group=group) }}'>{{ group }} homepage </a> <br/><br/>
+			<h1>Succes: {{ msg }} !</h1><br/>
 		</div>
 	</body>
 </html>
