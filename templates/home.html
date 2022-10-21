@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+	<head>
+	<title>Home</title>
+	<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="style.css") }}'>
+	</head>
+	<body>
+		<div class='contenu'>
+            {% for group_name in group_names %}
+			    <a href='{{ url_for('group_homepage', group_name=group_name) }}'>{{ group_name }}</a><br/><br/>
+		    {% endfor %}
+        </div>
+	</body>
+</html>
